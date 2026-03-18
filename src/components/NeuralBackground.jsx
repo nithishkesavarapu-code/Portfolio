@@ -16,29 +16,49 @@ export default function NeuralBackground() {
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
 
     const textureLoader = new THREE.TextureLoader();
+    textureLoader.setCrossOrigin("anonymous");
 
-    const icons = [
-      "/icons/react.png",
-      "/icons/node.png",
-      "/icons/python.png",
-      "/icons/js.png",
-      "/icons/tailwind.png",
-    ];
-
-    const particlesCount = 40;
+    const particlesCount = 25;
     const sprites = [];
     const velocities = [];
 
-    for (let i = 0; i < particlesCount; i++) {
-      const texture =
-        textureLoader.load(icons[i % icons.length]);
+    const createCircleTexture = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext("2d");
+      ctx.beginPath();
+      ctx.arc(256, 256, 240, 0, Math.PI * 2);
+      ctx.fillStyle = "#ffffff";
+      ctx.fill();
+      return new THREE.CanvasTexture(canvas);
+    };
+    
+    const fallbackTexture = createCircleTexture();
 
+    const maxConnections = (particlesCount * (particlesCount - 1)) / 2;
+    const linePositions = new Float32Array(maxConnections * 6);
+    const lineGeometry = new THREE.BufferGeometry();
+    lineGeometry.setAttribute("position", new THREE.BufferAttribute(linePositions, 3));
+    
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0x3b82f6,
+      transparent: true,
+      opacity: 0.2,
+    });
+
+    const linesMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+    scene.add(linesMesh);
+
+    for (let i = 0; i < particlesCount; i++) {
       const material = new THREE.SpriteMaterial({
-        map: texture,
+        map: fallbackTexture,
         transparent: true,
+        opacity: 0.15,
       });
 
       const sprite = new THREE.Sprite(material);
@@ -49,7 +69,8 @@ export default function NeuralBackground() {
         (Math.random() - 0.5) * 100
       );
 
-      sprite.scale.set(6, 6, 1);
+
+      sprite.scale.set(12, 12, 1);
 
       scene.add(sprite);
       sprites.push(sprite);
@@ -63,10 +84,45 @@ export default function NeuralBackground() {
       );
     }
 
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x3b82f6,
-      transparent: true,
-      opacity: 0.2,
+    const iconUrls = [
+      "https://cdn.simpleicons.org/react/white",
+      "https://cdn.simpleicons.org/nodedotjs/white",
+      "https://cdn.simpleicons.org/python/white",
+      "https://cdn.simpleicons.org/javascript/white",
+      "https://cdn.simpleicons.org/tailwindcss/white",
+      "https://cdn.simpleicons.org/html5/white",
+      "https://cdn.simpleicons.org/docker/white",
+      "https://cdn.simpleicons.org/mongodb/white",
+      "https://cdn.simpleicons.org/git/white"
+    ];
+
+    Promise.all(
+      iconUrls.map((url) => {
+        return new Promise((resolve) => {
+          textureLoader.load(
+            url,
+            (texture) => resolve(texture),
+            undefined,
+            () => resolve(fallbackTexture)
+          );
+        });
+      })
+    ).then((textures) => {
+      sprites.forEach((sprite, i) => {
+        const texture = textures[i % textures.length];
+        
+        texture.generateMipmaps = true;
+        texture.minFilter = THREE.LinearMipmapLinearFilter;
+        
+        const newMaterial = new THREE.SpriteMaterial({
+          map: texture,
+          transparent: true,
+          opacity: 0.15,
+        });
+        
+        sprite.material.dispose();
+        sprite.material = newMaterial;
+      });
     });
 
     let mouse = { x: 0, y: 0 };
@@ -76,14 +132,17 @@ export default function NeuralBackground() {
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
 
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
     window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("resize", handleResize);
 
     function animate() {
       requestAnimationFrame(animate);
-
-      scene.children = scene.children.filter(
-        (obj) => obj.type !== "Line"
-      );
 
       sprites.forEach((sprite, i) => {
         sprite.position.add(velocities[i]);
@@ -95,23 +154,29 @@ export default function NeuralBackground() {
         });
       });
 
+      let vertexPosition = 0;
+      let connectedLines = 0;
+
       for (let i = 0; i < sprites.length; i++) {
         for (let j = i + 1; j < sprites.length; j++) {
-          const dist = sprites[i].position.distanceTo(
-            sprites[j].position
-          );
+          const dist = sprites[i].position.distanceTo(sprites[j].position);
 
           if (dist < 20) {
-            const lineGeo = new THREE.BufferGeometry().setFromPoints([
-              sprites[i].position,
-              sprites[j].position,
-            ]);
+            linePositions[vertexPosition++] = sprites[i].position.x;
+            linePositions[vertexPosition++] = sprites[i].position.y;
+            linePositions[vertexPosition++] = sprites[i].position.z;
 
-            const line = new THREE.Line(lineGeo, lineMaterial);
-            scene.add(line);
+            linePositions[vertexPosition++] = sprites[j].position.x;
+            linePositions[vertexPosition++] = sprites[j].position.y;
+            linePositions[vertexPosition++] = sprites[j].position.z;
+
+            connectedLines++;
           }
         }
       }
+
+      lineGeometry.setDrawRange(0, connectedLines * 2);
+      lineGeometry.attributes.position.needsUpdate = true;
 
       camera.position.x += (mouse.x * 20 - camera.position.x) * 0.05;
       camera.position.y += (mouse.y * 20 - camera.position.y) * 0.05;
@@ -124,9 +189,22 @@ export default function NeuralBackground() {
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
-      mountRef.current.removeChild(renderer.domElement);
+      window.removeEventListener("resize", handleResize);
+      if (mountRef.current && renderer.domElement) {
+        mountRef.current.removeChild(renderer.domElement);
+      }
+
+      renderer.dispose();
+      lineGeometry.dispose();
+      lineMaterial.dispose();
     };
   }, []);
 
-  return <div ref={mountRef} className="fixed inset-0 -z-10 bg-black" />;
+  return (
+    <div 
+      ref={mountRef} 
+      className="fixed inset-0 bg-black pointer-events-none" 
+      style={{ zIndex: -50 }}
+    />
+  );
 }

@@ -34,7 +34,7 @@ export default function Hero() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="relative min-h-screen flex flex-col md:flex-row items-center justify-between gap-16 mb-32 px-6 bg-black overflow-hidden"
+      className="relative min-h-screen flex flex-col md:flex-row items-center justify-between gap-16 mb-32 px-6 overflow-hidden"
     >
       <div className="absolute inset-0 -z-10">
         <motion.div
@@ -54,10 +54,10 @@ export default function Hero() {
         />
       </div>
 
-      <div className="max-w-xl z-10">
+      <div className="max-w-xl z-10 flex flex-col justify-center">
         <motion.h1
           variants={fadeUp}
-          className="text-5xl md:text-7xl font-bold leading-tight text-white"
+          className="text-5xl md:text-7xl font-bold leading-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 pb-2"
         >
           Nithish Reddy Kesavarapu
         </motion.h1>
@@ -88,10 +88,11 @@ export default function Hero() {
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           className="relative"
         >
-          <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl">
+          <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl flex items-center justify-center relative">
             <img
-              src="/your-photo.jpg"
-              className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Nithish"
+              alt="Nithish Reddy"
+              className="w-full h-full object-cover transition-transform duration-500 hover:scale-110 relative z-10"
             />
           </div>
 
