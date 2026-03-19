@@ -8,7 +8,7 @@ const ScrollProgress = () => {
     damping:30
   })
   return (
-    <motion.dev style={{scaleX}} className='fixed top-0 left-0 right-0 h-1 bg-white origin-left z-50' />
+    <motion.div style={{scaleX}} className='fixed top-0 left-0 right-0 h-1 bg-white origin-left z-50' />
   )
 }
 
