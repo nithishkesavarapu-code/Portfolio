@@ -115,7 +115,7 @@ export default function Hero() {
 
             <motion.div variants={fadeUp} className="mt-6 md:mt-8 flex gap-4 justify-center lg:justify-start">
               <a
-                href="/src/assets/Resume Nithish Reddy Kesavarapu.pdf"
+                href="/Nithish_Reddy_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border border-white/20 px-6 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 hover:scale-105 text-white"
