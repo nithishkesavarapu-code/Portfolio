@@ -3,10 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Save, RefreshCw, Plus, Trash2, Copy, Check, Settings, Trophy } from 'lucide-react';
 import { ratingData as initialData, platforms } from '../data/contestRatings';
 
-const ContestManager = ({ onClose, onUpdate }) => {
+const ContestManager = ({ data, onClose, onUpdate }) => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [passcode, setPasscode] = useState('');
-  const [data, setData] = useState([]);
   const [newEntry, setNewEntry] = useState({ date: new Date().toISOString().split('T')[0], platform: 'LeetCode', rating: '' });
   const [handle, setHandle] = useState('');
   const [syncPlatform, setSyncPlatform] = useState('Codeforces');
@@ -15,13 +14,6 @@ const ContestManager = ({ onClose, onUpdate }) => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('contest_ratings_data');
-    if (saved) {
-      setData(JSON.parse(saved));
-    } else {
-      setData(initialData);
-    }
-
     if (sessionStorage.getItem('contest_manager_auth') === 'true') {
       setIsAuthorized(true);
     }
@@ -38,7 +30,6 @@ const ContestManager = ({ onClose, onUpdate }) => {
 
   const handleSave = (updatedData) => {
     const sorted = [...updatedData].sort((a, b) => new Date(a.date) - new Date(b.date));
-    setData(sorted);
     localStorage.setItem('contest_ratings_data', JSON.stringify(sorted));
     onUpdate(sorted);
   };
@@ -50,7 +41,10 @@ const ContestManager = ({ onClose, onUpdate }) => {
     let newData;
     if (existingIndex > -1) {
       newData = [...data];
-      newData[existingIndex] = { ...newData[existingIndex], [newEntry.platform]: parseInt(newEntry.rating) };
+      newData[existingIndex] = { 
+        ...newData[existingIndex], 
+        [newEntry.platform]: parseInt(newEntry.rating) 
+      };
     } else {
       newData = [...data, { date: newEntry.date, [newEntry.platform]: parseInt(newEntry.rating) }];
     }
@@ -67,7 +61,7 @@ const ContestManager = ({ onClose, onUpdate }) => {
   const syncData = async () => {
     if (!handle) return;
     setLoading(true);
-    let updatedData = [...data];
+    let updatedData = data.map(item => ({ ...item }));
 
     try {
       if (syncPlatform === 'Codeforces') {

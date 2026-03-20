@@ -259,6 +259,7 @@ export default function Hero() {
       <AnimatePresence>
         {showManager && (
           <ContestManager 
+            data={chartData}
             onClose={() => setShowManager(false)} 
             onUpdate={(newData) => setChartData(newData)}
           />
