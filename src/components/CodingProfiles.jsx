@@ -13,7 +13,28 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
 };
 
-const CodingProfiles = () => {
+const CodingProfiles = ({ data }) => {
+  const syncProfiles = codingProfiles.map(profile => {
+    const platformKey = profile.platform;
+    
+    const latestRating = [...data]
+      .reverse()
+      .find(entry => entry[platformKey])?.[platformKey];
+
+    if (latestRating) {
+      return {
+        ...profile,
+        stats: profile.stats.map(stat => {
+          if (stat.label === "Rating" || stat.label === "Max Rating") {
+            return { ...stat, value: latestRating.toString() };
+          }
+          return stat;
+        })
+      };
+    }
+    return profile;
+  });
+
   return (
     <section id="coding" className="relative z-10 pt-32 pb-20 md:pt-40 md:pb-32 scroll-mt-24 overflow-visible">
       <div className="max-w-7xl mx-auto px-6">
@@ -39,7 +60,7 @@ const CodingProfiles = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {codingProfiles.map((profile, index) => (
+            {syncProfiles.map((profile, index) => (
               <motion.a
                 key={index}
                 href={profile.url}

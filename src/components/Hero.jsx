@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import profileImg from "../assets/Nithish.png";
+import profileImg from "../assets/Nithish_profile.png";
 import { Settings } from "lucide-react";
 import ContestManager from "./ContestManager";
 import { ratingData, platforms } from "../data/contestRatings";
@@ -61,16 +61,8 @@ const MiniTooltip = ({ active, payload, label }) => {
   );
 };
 
-export default function Hero() {
-  const [chartData, setChartData] = useState(ratingData);
+export default function Hero({ data, onUpdate }) {
   const [showManager, setShowManager] = useState(false);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('contest_ratings_data');
-    if (saved) {
-      setChartData(JSON.parse(saved));
-    }
-  }, []);
 
   return (
     <motion.section
@@ -216,7 +208,7 @@ export default function Hero() {
           </div>
 
           <ResponsiveContainer width="100%" height={160}>
-            <LineChart data={chartData} margin={{ top: 10, right: 12, bottom: 0, left: 0 }}>
+            <LineChart data={data} margin={{ top: 10, right: 12, bottom: 0, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
               <XAxis
                 dataKey="date"
@@ -259,9 +251,9 @@ export default function Hero() {
       <AnimatePresence>
         {showManager && (
           <ContestManager 
-            data={chartData}
+            data={data}
             onClose={() => setShowManager(false)} 
-            onUpdate={(newData) => setChartData(newData)}
+            onUpdate={onUpdate}
           />
         )}
       </AnimatePresence>

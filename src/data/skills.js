@@ -10,13 +10,13 @@ export const skillCategories = [
     title: "Web Technologies",
     color: "text-purple-400",
     bgGlow: "group-hover:shadow-[0_0_30px_rgba(192,132,252,0.15)] group-hover:border-purple-500/30",
-    skills: ["React.js", "Node.js", "Express.js", "NestJS", "Django", "Flask", "Socket.io", "HTML5/CSS3"]
+    skills: ["React.js", "Node.js", "Express.js", "NestJS", "Django", "Flask", "HTML5/CSS3"]
   },
   {
     title: "Database & Infrastructure",
     color: "text-emerald-400",
     bgGlow: "group-hover:shadow-[0_0_30px_rgba(52,211,153,0.15)] group-hover:border-emerald-400/30",
-    skills: ["MongoDB", "PostgreSQL", "Redis", "Docker"]
+    skills: ["MongoDB", "PostgreSQL", "MySQL", "Redis", "Docker"]
   },
   {
     title: "AI & Machine Learning",
@@ -28,7 +28,7 @@ export const skillCategories = [
     title: "Tools & Concepts",
     color: "text-blue-500",
     bgGlow: "group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] group-hover:border-blue-500/30",
-    skills: ["Git", "GitHub", "Figma", "VS Code", "Postman", "Linux", "DSA", "System Design", "OOP", "OS", "DBMS"]
+    skills: ["Git", "GitHub", "Figma", "VS Code", "Postman", "Linux", "DSA", "OOPs"]
   },
   {
     title: "Soft Skills",
