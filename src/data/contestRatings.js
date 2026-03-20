@@ -114,6 +114,14 @@ export const ratingData = [
     "CodeChef": 1652
   },
   {
+    "date": "2026-03-14",
+    "LeetCode": 1745
+  },
+  {
+    "date": "2026-03-15",
+    "LeetCode": 1775
+  },
+  {
     "date": "2026-03-16",
     "Codeforces": 1387
   },
