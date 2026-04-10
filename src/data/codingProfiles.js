@@ -7,7 +7,7 @@ export const codingProfiles = [
     stats: [
       { label: "Problems Solved", value: "100+" },
       { label: "Rating", value: "1675+" },
-      { label: "Focus", value: "DSA" }
+      { label: "Rank", value: "Knight" }
     ],
     color: "from-orange-500/20 to-yellow-500/10",
     borderHover: "hover:border-orange-400/40",
@@ -39,7 +39,7 @@ export const codingProfiles = [
     stats: [
       { label: "Max Rating", value: "1387" },
       { label: "Platform", value: "Codeforces" },
-      { label: "Status", value: "Active" }
+      { label: "Rank", value: "Specialist" }
     ],
     color: "from-blue-600/20 to-indigo-500/10",
     borderHover: "hover:border-blue-400/40",
@@ -54,7 +54,7 @@ export const codingProfiles = [
     url: "https://www.codechef.com/users/nithishk01",
     stats: [
       { label: "Rating", value: "1703" },
-      { label: "Stars", value: "3★" },
+      { label: "Stars", value: "4★" },
       { label: "Platform", value: "CodeChef" }
     ],
     color: "from-amber-600/20 to-yellow-500/10",

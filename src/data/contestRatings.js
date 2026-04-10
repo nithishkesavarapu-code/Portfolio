@@ -73,7 +73,7 @@ export const ratingData = [
   },
   {
     "date": "2026-02-11",
-    "Codeforces": 1062
+    "Codeforces": 1063
   },
   {
     "date": "2026-02-14",
@@ -81,7 +81,7 @@ export const ratingData = [
   },
   {
     "date": "2026-02-15",
-    "Codeforces": 1098,
+    "Codeforces": 1100,
     "LeetCode": 1676
   },
   {
@@ -90,7 +90,7 @@ export const ratingData = [
   },
   {
     "date": "2026-02-21",
-    "Codeforces": 1233
+    "Codeforces": 1235
   },
   {
     "date": "2026-02-22",
@@ -106,7 +106,7 @@ export const ratingData = [
   },
   {
     "date": "2026-03-08",
-    "Codeforces": 1322,
+    "Codeforces": 1325,
     "LeetCode": 1675
   },
   {
@@ -123,11 +123,52 @@ export const ratingData = [
   },
   {
     "date": "2026-03-16",
-    "Codeforces": 1387
+    "Codeforces": 1392
   },
   {
     "date": "2026-03-18",
-    "CodeChef": 1703
+    "CodeChef": 1704
+  },
+  {
+    "date": "2026-03-21",
+    "Codeforces": 1319
+  },
+  {
+    "date": "2026-03-22",
+    "LeetCode": 1787
+  },
+  {
+    "date": "2026-03-25",
+    "CodeChef": 1753
+  },
+  {
+    "date": "2026-03-28",
+    "LeetCode": 1815
+  },
+  {
+    "date": "2026-03-29",
+    "Codeforces": 1392,
+    "LeetCode": 1882
+  },
+  {
+    "date": "2026-04-01",
+    "CodeChef": 1780
+  },
+  {
+    "date": "2026-04-04",
+    "Codeforces": 1410
+  },
+  {
+    "date": "2026-04-05",
+    "LeetCode": 1910
+  },
+  {
+    "date": "2026-04-07",
+    "Codeforces": 1531
+  },
+  {
+    "date": "2026-04-08",
+    "CodeChef": 1813
   }
 ];
 
