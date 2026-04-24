@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import About from './components/About'
 import Contact from './components/Contact'
 import Hero from './components/Hero'
@@ -35,6 +36,7 @@ const App = () => {
       <Skills />
       <CodingProfiles data={contestRatings} />
       <Contact />
+      <Analytics />
     </div>
   )
 }
